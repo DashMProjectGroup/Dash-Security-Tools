@@ -1,4 +1,4 @@
-# DPNS-Tester
+# Fuzzer
 
 Multithreaded Python Fuzzer used to analyze the gRPC endpoints offered by the [Dash-API](https://github.com/dashevo/platform/tree/master/packages/dapi).
 Supports both the Dash TestNet and a local DevNet once a correct set of Masternode IP addresses has been supplied.
