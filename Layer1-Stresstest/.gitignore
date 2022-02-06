@@ -1,0 +1,5 @@
+mempool.info
+tx_dos.log
+mempool_monitoring.log
+*.log
+*.pyc

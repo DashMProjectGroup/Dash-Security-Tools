@@ -1,0 +1,5 @@
+logs/*.txt
+logs_devnet/*.txt
+.vscode
+__pycache__
+*.pyc

@@ -1,0 +1,147 @@
+syntax = "proto3";
+
+package org.dash.platform.dapi.v0;
+
+service Platform {
+  rpc broadcastStateTransition (BroadcastStateTransitionRequest) returns (BroadcastStateTransitionResponse);
+  rpc getIdentity (GetIdentityRequest) returns (GetIdentityResponse);
+  rpc getDataContract (GetDataContractRequest) returns (GetDataContractResponse);
+  rpc getDocuments (GetDocumentsRequest) returns (GetDocumentsResponse);
+  rpc getIdentitiesByPublicKeyHashes (GetIdentitiesByPublicKeyHashesRequest) returns (GetIdentitiesByPublicKeyHashesResponse);
+  rpc getIdentityIdsByPublicKeyHashes (GetIdentityIdsByPublicKeyHashesRequest) returns (GetIdentityIdsByPublicKeyHashesResponse);
+  rpc waitForStateTransitionResult (WaitForStateTransitionResultRequest) returns (WaitForStateTransitionResultResponse);
+  rpc getConsensusParams (GetConsensusParamsRequest) returns (GetConsensusParamsResponse);
+}
+
+message StoreTreeProofs {
+  bytes identities_proof = 1;
+  bytes public_key_hashes_to_identity_ids_proof = 2;
+  bytes data_contracts_proof = 3;
+  bytes documents_proof = 4;
+}
+
+message Proof {
+  bytes root_tree_proof = 1;
+  StoreTreeProofs store_tree_proofs = 2;
+  bytes signature_llmq_hash = 3;
+  bytes signature = 4;
+}
+
+message ResponseMetadata {
+  int64 height = 1;
+  uint32 core_chain_locked_height = 2;
+}
+
+message StateTransitionBroadcastError {
+  uint32 code = 1;
+  string message = 2;
+  bytes data = 3;
+}
+
+message BroadcastStateTransitionRequest {
+  bytes state_transition = 1;
+}
+
+message BroadcastStateTransitionResponse {
+
+}
+
+message GetIdentityRequest {
+  bytes id = 1;
+  bool prove = 2;
+}
+
+message GetIdentityResponse {
+  bytes identity = 1;
+  Proof proof = 2;
+  ResponseMetadata metadata = 3;
+}
+
+ message GetDataContractRequest {
+  bytes id = 1;
+  bool prove = 2;
+}
+
+message GetDataContractResponse {
+  bytes data_contract = 1;
+  Proof proof = 2;
+  ResponseMetadata metadata = 3;
+}
+
+message GetDocumentsRequest {
+  bytes data_contract_id = 1;
+  string document_type = 2;
+
+  bytes where = 3;
+  bytes order_by = 4;
+
+  uint32 limit = 5;
+
+  uint32 start_at = 7;
+
+  bool prove = 8;
+}
+
+message GetDocumentsResponse {
+  repeated bytes documents = 1;
+  Proof proof = 2;
+  ResponseMetadata metadata = 3;
+}
+
+message GetIdentitiesByPublicKeyHashesRequest {
+  bytes public_key_hashes = 1;
+  bool prove = 2;
+}
+
+message GetIdentitiesByPublicKeyHashesResponse {
+  repeated bytes identities = 1;
+  Proof proof = 2;
+  ResponseMetadata metadata = 3;
+}
+
+message GetIdentityIdsByPublicKeyHashesRequest {
+  bytes public_key_hashes = 1;
+  bool prove = 2;
+}
+
+message GetIdentityIdsByPublicKeyHashesResponse {
+  bytes identity_ids = 1;
+  Proof proof = 2;
+  ResponseMetadata metadata = 3;
+}
+
+message WaitForStateTransitionResultRequest {
+  bytes state_transition_hash = 1;
+  bool prove = 2;
+}
+
+message WaitForStateTransitionResultResponse {
+  oneof responses {
+    StateTransitionBroadcastError error = 1;
+    Proof proof = 2;
+  }
+  ResponseMetadata metadata = 3;
+}
+
+message ConsensusParamsBlock {
+  string max_bytes = 1;
+  string max_gas = 2;
+  string time_iota_ms = 3;
+}
+
+message ConsensusParamsEvidence {
+  string max_age_num_blocks = 1;
+  string max_age_duration = 2;
+  string max_bytes = 3;
+}
+
+message GetConsensusParamsRequest {
+  int64 height = 1;
+  bool prove = 2;
+}
+
+message GetConsensusParamsResponse {
+  ConsensusParamsBlock block = 1;
+  ConsensusParamsEvidence evidence = 2;
+}
+

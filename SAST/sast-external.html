@@ -1,0 +1,255 @@
+<style>
+body {
+background-color: #222;
+color: #fff;
+        counter-reset: h1counter;
+        counter-reset: h2counter;
+}
+    h1:before {
+        content: counter(h1counter) ".\0000a0\0000a0";
+    }
+    h1 {
+        counter-reset: h2counter;
+        counter-increment: h1counter;
+    }
+    h2:before {
+        content: counter(h1counter) "." counter(h2counter) ".\0000a0\0000a0";
+        counter-increment: h2counter;
+    }
+</style>
+
+<h1>repo: https://github.com/grpc/grpc-node/tree/master/packages/grpc-js</h1>
+
+<h2>npm audit --only=prod</h2>
+<pre>found <font color="#26A269"><b>0</b></font> vulnerabilities</pre>
+
+<h2>semgrep --config "p/nodejsscan" --config "p/nodejs"</h2>
+<pre><font color="#26A269">gulpfile.ts</font>
+<font color="#A2734C">severity:warning rule:javascript.lang.security.detect-non-literal-require.detect-non-literal-require: Detected the use of require(variable). Calling require with a non-literal argument might allow an attacker to load an run arbitrary code, or access arbitrary files.</font>
+<font color="#26A269">35</font>:const supportedVersionRange = <font color="#5E5C64">require(pkgPath).</font>engines.node;
+
+<font color="#26A269">src/backoff-timeout.ts</font>
+<font color="#A2734C">severity:warning rule:ajinabraham.njsscan.crypto_node.node_insecure_random_generator: crypto.pseudoRandomBytes()/Math.random() is a cryptographically weak random number generator.</font>
+<font color="#26A269">29</font>:  return <font color="#5E5C64">Math.random() </font>* (max - min) + min;
+
+<font color="#26A269">src/load-balancer-round-robin.ts</font>
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-bracket-object-injection.detect-bracket-object-injection: Object injection via bracket notation via this.nextIndex</font>
+<font color="#26A269">75</font>:    <font color="#5E5C64">const pickedSubchannel = this.subchannelList[this.nextIndex];</font>
+
+<font color="#26A269">src/make-client.ts</font>
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-bracket-object-injection.detect-bracket-object-injection: Object injection via bracket notation via name</font>
+<font color="#26A269">137</font>:    <font color="#5E5C64">const attrs = methods[name];</font>
+--------------------------------------------------------------------------------
+<font color="#26A269">168</font>:      <font color="#5E5C64">ServiceClientImpl.prototype[attrs.originalName] =</font>
+<font color="#26A269">169</font>:<font color="#5E5C64">        ServiceClientImpl.prototype[name];</font>
+--------------------------------------------------------------------------------
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-bracket-object-injection.detect-bracket-object-injection: Object injection via bracket notation via serviceFqn</font>
+<font color="#26A269">214</font>:      <font color="#5E5C64">const service = packageDef[serviceFqn];</font>
+--------------------------------------------------------------------------------
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-bracket-object-injection.detect-bracket-object-injection: Object injection via bracket notation via nameComponents.length - 1</font>
+<font color="#26A269">219</font>:      <font color="#5E5C64">const serviceName = nameComponents[nameComponents.length - 1];</font>
+
+<font color="#26A269">src/metadata.ts</font>
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-bracket-object-injection.detect-bracket-object-injection: Object injection via bracket notation via key</font>
+<font color="#26A269">270</font>:      <font color="#5E5C64">const values = headers[key];</font>
+
+<font color="#26A269">src/resolver-dns.ts</font>
+<font color="#A2734C">severity:warning rule:ajinabraham.njsscan.crypto_node.node_insecure_random_generator: crypto.pseudoRandomBytes()/Math.random() is a cryptographically weak random number generator.</font>
+<font color="#26A269">115</font>:    this.percentage = <font color="#5E5C64">Math.random() </font>* 100;
+
+<font color="#26A269">src/server-credentials.ts</font>
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-bracket-object-injection.detect-bracket-object-injection: Object injection via bracket notation via i</font>
+<font color="#26A269">55</font>:      <font color="#5E5C64">const pair = keyCertPairs[i];</font>
+
+<font color="#26A269">src/server.ts</font>
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-bracket-object-injection.detect-bracket-object-injection: Object injection via bracket notation via name</font>
+<font color="#26A269">246</font>:      <font color="#5E5C64">const attrs = service[name];</font>
+--------------------------------------------------------------------------------
+<font color="#26A269">263</font>:      <font color="#5E5C64">let implFn = implementation[name];</font>
+--------------------------------------------------------------------------------
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-bracket-object-injection.detect-bracket-object-injection: Object injection via bracket notation via attrs.originalName</font>
+<font color="#26A269">267</font>:        <font color="#5E5C64">implFn = implementation[attrs.originalName];</font>
+--------------------------------------------------------------------------------
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-bracket-object-injection.detect-bracket-object-injection: Object injection via bracket notation via name</font>
+<font color="#26A269">297</font>:      <font color="#5E5C64">const attrs = service[name];</font>
+--------------------------------------------------------------------------------
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-bracket-object-injection.detect-bracket-object-injection: Object injection via bracket notation via http2.constants.HTTP2_HEADER_CONTENT_TYPE</font>
+<font color="#26A269">706</font>:        <font color="#5E5C64">const contentType = headers[http2.constants.HTTP2_HEADER_CONTENT_TYPE];</font>
+
+<font color="#26A269">src/subchannel-pool.ts</font>
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-bracket-object-injection.detect-bracket-object-injection: Object injection via bracket notation via channelTarget</font>
+<font color="#26A269">69</font>:      <font color="#5E5C64">const subchannelObjArray = this.pool[channelTarget];</font>
+
+<font color="#26A269">src/subchannel.ts</font>
+<font color="#A2734C">severity:warning rule:ajinabraham.njsscan.crypto_node.node_insecure_random_generator: crypto.pseudoRandomBytes()/Math.random() is a cryptographically weak random number generator.</font>
+<font color="#26A269">83</font>:  return <font color="#5E5C64">Math.random() </font>* (max - min) + min;
+
+<font color="#26A269">test/test-channelz.ts</font>
+<font color="#C01C28">severity:error </font><font color="#A2734C">rule:ajinabraham.njsscan.eval_node.eval_nodejs: User controlled data in eval() or similar functions may result in Server Side Injection or Remote Code Injection</font>
+<font color="#26A269">46</font>:      <font color="#5E5C64">setTimeout(() =&gt; {</font>
+<font color="#26A269">47</font>:<font color="#5E5C64">        callback({</font>
+<font color="#26A269">48</font>:<font color="#5E5C64">          code: grpc.status.INVALID_ARGUMENT,</font>
+<font color="#26A269">49</font>:<font color="#5E5C64">          details: call.request.message</font>
+<font color="#26A269">50</font>:<font color="#5E5C64">        });</font>
+<font color="#26A269">51</font>:<font color="#5E5C64">      }, call.request.errorAfter)</font>
+ran 162 rules on 129 files: 18 findings
+</pre>
+
+
+
+<h1>repo: https://github.com/tedeh/jayson</h1>
+
+<h2>npm audit --only=prod</h2>
+<pre>found <font color="#26A269"><b>0</b></font> vulnerabilities</pre>
+
+<h2>semgrep --config "p/nodejsscan" --config "p/nodejs"</h2>
+<pre><font color="#26A269">README.md</font>
+<font color="#C01C28">severity:error </font><font color="#A2734C">rule:javascript.lang.security.detect-insecure-websocket.detect-insecure-websocket: Insecure WebSocket Detected. WebSocket Secure (wss) should be used for all WebSocket connections.</font>
+<font color="#26A269">582</font>:  url: &apos;<font color="#5E5C64">ws://l</font>ocalhost:12345&apos;,
+
+<font color="#26A269">examples/reviving_and_replacing/shared.js</font>
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-bracket-object-injection.detect-bracket-object-injection: Object injection via bracket notation via prop</font>
+<font color="#26A269">21</font>:    for(const prop in value.$props) <font color="#5E5C64">obj[prop] = value.$props[prop];</font>
+
+<font color="#26A269">examples/tls_example/client.js</font>
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-non-literal-fs-filename.detect-non-literal-fs-filename: A variable is present in the filename argument of fs calls, this might allow an attacker to access anything on your system.</font>
+<font color="#26A269">10</font>:  key: <font color="#5E5C64">fs.readFileSync(path.resolve(&apos;./../../test/fixtures/keys/agent1-key.pem&apos;)),</font>
+--------------------------------------------------------------------------------
+<font color="#26A269">11</font>:  cert: <font color="#5E5C64">fs.readFileSync(path.resolve(&apos;./../../test/fixtures/keys/agent1-cert.pem&apos;)),</font>
+--------------------------------------------------------------------------------
+<font color="#26A269">14</font>:  ca: [ <font color="#5E5C64">fs.readFileSync(path.resolve(&apos;./../../test/fixtures/keys/ca1-cert.pem&apos;)) </font>],
+
+<font color="#26A269">examples/tls_example/server.js</font>
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-non-literal-fs-filename.detect-non-literal-fs-filename: A variable is present in the filename argument of fs calls, this might allow an attacker to access anything on your system.</font>
+<font color="#26A269">10</font>:  key: <font color="#5E5C64">fs.readFileSync(path.resolve(&apos;./../../test/fixtures/keys/agent1-key.pem&apos;)),</font>
+--------------------------------------------------------------------------------
+<font color="#26A269">11</font>:  cert: <font color="#5E5C64">fs.readFileSync(path.resolve(&apos;./../../test/fixtures/keys/agent1-cert.pem&apos;)),</font>
+--------------------------------------------------------------------------------
+<font color="#26A269">14</font>:  ca: [ <font color="#5E5C64">fs.readFileSync(path.resolve(&apos;./../../test/fixtures/keys/ca1-cert.pem&apos;)) </font>],
+
+<font color="#26A269">examples/websocket/client.js</font>
+<font color="#C01C28">severity:error </font><font color="#A2734C">rule:javascript.lang.security.detect-insecure-websocket.detect-insecure-websocket: Insecure WebSocket Detected. WebSocket Secure (wss) should be used for all WebSocket connections.</font>
+<font color="#26A269">4</font>:  url: &apos;<font color="#5E5C64">ws://l</font>ocalhost:12345&apos;,
+
+<font color="#26A269">lib/client/http.js</font>
+<font color="#A2734C">severity:warning rule:problem-based-packs.insecure-transport.js-node.using-http-server.using-http-server: Checks for any usage of http servers instead of https servers. Encourages the usage of https protocol instead of http, which does not have TLS and is therefore unencrypted. Using http can lead to man-in-the-middle attacks in which the attacker is able to read sensitive information.</font>
+<font color="#26A269">115</font>:  <font color="#5E5C64">return http.request(options || {});</font>
+
+<font color="#26A269">lib/server/index.js</font>
+<font color="#A2734C">severity:warning rule:ajinabraham.njsscan.regex_dos.regex_dos: Ensure that the regex used to compare with user supplied input is safe from regular expression denial of service.</font>
+<font color="#26A269">137</font>:  if(<font color="#5E5C64">/^rpc\./.test(name))</font> {
+--------------------------------------------------------------------------------
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-bracket-object-injection.detect-bracket-object-injection: Object injection via bracket notation via handle</font>
+<font color="#26A269">67</font>:    <font color="#5E5C64">const code = Server.errors[handle];</font>
+
+<font color="#26A269">lib/utils.js</font>
+<font color="#A2734C">severity:warning rule:ajinabraham.njsscan.regex_dos.regex_dos: Ensure that the regex used to compare with user supplied input is safe from regular expression denial of service.</font>
+<font color="#26A269">202</font>:  <font color="#5E5C64">const contentType = request.headers[&apos;content-type&apos;] || &apos;&apos;;</font>
+<font color="#26A269">203</font>:<font color="#5E5C64">  return RegExp(type, &apos;i&apos;).test(contentType);</font>
+--------------------------------------------------------------------------------
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-bracket-object-injection.detect-bracket-object-injection: Object injection via bracket notation via key</font>
+<font color="#26A269">226</font>:  <font color="#5E5C64">let k, v, value = holder[key];</font>
+--------------------------------------------------------------------------------
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp: RegExp() called with a variable, this might allow an attacker to DOS your application with a long-running regular expression.</font>
+<font color="#26A269">203</font>:  return <font color="#5E5C64">RegExp(type, &apos;i&apos;).</font>test(contentType);
+--------------------------------------------------------------------------------
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.prototype-pollution.prototype-pollution-assignment.prototype-pollution-assignment: Possibility of prototype polluting assignment detected. By adding or modifying attributes of an object prototype, it is possible to create attributes that exist on every object, or replace critical attributes with malicious ones. This can be problematic if the software depends on existence or non-existence of certain attributes, or uses pre-defined attributes of object prototype (such as hasOwnProperty, toString or valueOf). Possible mitigations might be: freezing the object prototype, using an object without prototypes (via Object.create(null) ), blocking modifications of attributes that resolve to object prototype, using Map instead of object.</font>
+<font color="#26A269">232</font>:          <font color="#5E5C64">value[k] = v;</font>
+--------------------------------------------------------------------------------
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.prototype-pollution.prototype-pollution-function.prototype-pollution-function: Possibility of prototype polluting function detected. By adding or modifying attributes of an object prototype, it is possible to create attributes that exist on every object, or replace critical attributes with malicious ones. This can be problematic if the software depends on existence or non-existence of certain attributes, or uses pre-defined attributes of object prototype (such as hasOwnProperty, toString or valueOf). Possible mitigations might be: freezing the object prototype, using an object without prototypes (via Object.create(null) ), blocking modifications of attributes that resolve to object prototype, using Map instead of object.</font>
+<font color="#26A269">232</font>:          <font color="#5E5C64">value[k] = v;</font>
+
+<font color="#26A269">test/bin.server-client.test.js</font>
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-bracket-object-injection.detect-bracket-object-injection: Object injection via bracket notation via arg</font>
+<font color="#26A269">154</font>:    <font color="#5E5C64">const value = args[arg];</font>
+--------------------------------------------------------------------------------
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-non-literal-fs-filename.detect-non-literal-fs-filename: A variable is present in the filename argument of fs calls, this might allow an attacker to access anything on your system.</font>
+<font color="#26A269">112</font>:        <font color="#5E5C64">fs.unlinkSync(socketPath);</font>
+
+<font color="#26A269">test/examples.test.js</font>
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-non-literal-fs-filename.detect-non-literal-fs-filename: A variable is present in the filename argument of fs calls, this might allow an attacker to access anything on your system.</font>
+<font color="#26A269">12</font>:  const dirs = <font color="#5E5C64">fs.readdirSync(examplesPath);</font>
+--------------------------------------------------------------------------------
+<font color="#26A269">14</font>:  const tests = dirs.map(dir =&gt; <font color="#5E5C64">fs.readdirSync(path.join(examplesPath, dir)).</font>map(name =&gt; {
+
+<font color="#26A269">test/http.client-server.test.js</font>
+<font color="#A2734C">severity:warning rule:problem-based-packs.insecure-transport.js-node.http-request.http-request: Checks for requests sent to http:// URLs. This is dangerous as the server is attempting to connect to a website that does not encrypt traffic with TLS. Instead, only send requests to https:// URLs.</font>
+<font color="#26A269">38</font>:      <font color="#5E5C64">const reqOptions = {</font>
+<font color="#26A269">39</font>:<font color="#5E5C64">        hostname: &apos;localhost&apos;,</font>
+<font color="#26A269">40</font>:<font color="#5E5C64">        port: 3999,</font>
+<font color="#26A269">41</font>:<font color="#5E5C64">        method: &apos;POST&apos;,</font>
+<font color="#26A269">42</font>:<font color="#5E5C64">        headers: {&apos;Content-Type&apos;: &apos;application/json&apos;}</font>
+<font color="#26A269">43</font>:<font color="#5E5C64">      };</font>
+<font color="#26A269">44</font>:<font color="#5E5C64">      const req = http.request(reqOptions);</font>
+--------------------------------------------------------------------------------
+<font color="#A2734C">severity:warning rule:problem-based-packs.insecure-transport.js-node.using-http-server.using-http-server: Checks for any usage of http servers instead of https servers. Encourages the usage of https protocol instead of http, which does not have TLS and is therefore unencrypted. Using http can lead to man-in-the-middle attacks in which the attacker is able to read sensitive information.</font>
+<font color="#26A269">44</font>:      <font color="#5E5C64">const req = http.request(reqOptions);</font>
+
+<font color="#26A269">test/promise.test.js</font>
+<font color="#C01C28">severity:error </font><font color="#A2734C">rule:javascript.lang.security.detect-insecure-websocket.detect-insecure-websocket: Insecure WebSocket Detected. WebSocket Secure (wss) should be used for all WebSocket connections.</font>
+<font color="#26A269">177</font>:            url: &apos;<font color="#5E5C64">ws://l</font>ocalhost:3999&apos;,
+
+<font color="#26A269">test/support/index.js</font>
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-bracket-object-injection.detect-bracket-object-injection: Object injection via bracket notation via prop</font>
+<font color="#26A269">75</font>:      for(const prop in value.$props) <font color="#5E5C64">obj[prop] = value.$props[prop];</font>
+--------------------------------------------------------------------------------
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-non-literal-fs-filename.detect-non-literal-fs-filename: A variable is present in the filename argument of fs calls, this might allow an attacker to access anything on your system.</font>
+<font color="#26A269">15</font>:  ca: [<font color="#5E5C64">fs.readFileSync(__dirname + &apos;/../fixtures/keys/ca1-cert.pem&apos;)]</font>,
+--------------------------------------------------------------------------------
+<font color="#26A269">16</font>:  key: <font color="#5E5C64">fs.readFileSync(__dirname + &apos;/../fixtures/keys/agent1-key.pem&apos;),</font>
+--------------------------------------------------------------------------------
+<font color="#26A269">17</font>:  cert: <font color="#5E5C64">fs.readFileSync(__dirname + &apos;/../fixtures/keys/agent1-cert.pem&apos;)</font>
+
+<font color="#26A269">test/tcp.client-server.test.js</font>
+<font color="#C01C28">severity:error </font><font color="#A2734C">rule:ajinabraham.njsscan.eval_node.eval_nodejs: User controlled data in eval() or similar functions may result in Server Side Injection or Remote Code Injection</font>
+<font color="#26A269">148</font>:            <font color="#5E5C64">setTimeout(function () {</font>
+<font color="#26A269">149</font>:<font color="#5E5C64">              callback(null, true);</font>
+<font color="#26A269">150</font>:<font color="#5E5C64">            }, args.timeout);</font>
+
+<font color="#26A269">test/tls.client-server.test.js</font>
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-non-literal-fs-filename.detect-non-literal-fs-filename: A variable is present in the filename argument of fs calls, this might allow an attacker to access anything on your system.</font>
+<font color="#26A269">12</font>:  ca: [<font color="#5E5C64">fs.readFileSync(__dirname + &apos;/fixtures/keys/ca1-cert.pem&apos;)]</font>,
+--------------------------------------------------------------------------------
+<font color="#26A269">13</font>:  key: <font color="#5E5C64">fs.readFileSync(__dirname + &apos;/fixtures/keys/agent1-key.pem&apos;),</font>
+--------------------------------------------------------------------------------
+<font color="#26A269">14</font>:  cert: <font color="#5E5C64">fs.readFileSync(__dirname + &apos;/fixtures/keys/agent1-cert.pem&apos;),</font>
+
+<font color="#26A269">test/websocket.server-client.test.js</font>
+<font color="#C01C28">severity:error </font><font color="#A2734C">rule:javascript.lang.security.detect-insecure-websocket.detect-insecure-websocket: Insecure WebSocket Detected. WebSocket Secure (wss) should be used for all WebSocket connections.</font>
+<font color="#26A269">36</font>:        url: &apos;<font color="#5E5C64">ws://l</font>ocalhost:3999&apos;,
+
+<font color="#26A269">typescript/test.ts</font>
+<font color="#A2734C">severity:warning rule:ajinabraham.njsscan.crypto_node.node_insecure_random_generator: crypto.pseudoRandomBytes()/Math.random() is a cryptographically weak random number generator.</font>
+<font color="#26A269">705</font>:    generator: ():number =&gt; <font color="#5E5C64">Math.random(),</font>
+--------------------------------------------------------------------------------
+<font color="#26A269">709</font>:    generator: ():number =&gt; <font color="#5E5C64">Math.random(),</font>
+--------------------------------------------------------------------------------
+<font color="#26A269">754</font>:    generator: () =&gt; String(Math.round(<font color="#5E5C64">Math.random() </font>* 10000)),
+--------------------------------------------------------------------------------
+<font color="#26A269">784</font>:    generator: () =&gt; String(Math.round(<font color="#5E5C64">Math.random() </font>* 10000)),
+--------------------------------------------------------------------------------
+<font color="#26A269">797</font>:  const request = jayson.Utils.request(&apos;add&apos;, [1, 2], undefined, {generator: () =&gt; <font color="#5E5C64">Math.random()}</font>);
+--------------------------------------------------------------------------------
+<font color="#A2734C">severity:warning rule:javascript.lang.security.audit.detect-non-literal-fs-filename.detect-non-literal-fs-filename: A variable is present in the filename argument of fs calls, this might allow an attacker to access anything on your system.</font>
+<font color="#26A269">455</font>:    key: <font color="#5E5C64">fs.readFileSync(path.resolve(&apos;./../../../test/fixtures/keys/agent1-key.pem&apos;)),</font>
+--------------------------------------------------------------------------------
+<font color="#26A269">456</font>:    cert: <font color="#5E5C64">fs.readFileSync(path.resolve(&apos;./../../../test/fixtures/keys/agent1-cert.pem&apos;)),</font>
+--------------------------------------------------------------------------------
+<font color="#26A269">459</font>:    ca: [ <font color="#5E5C64">fs.readFileSync(path.resolve(&apos;./../../../test/fixtures/keys/ca1-cert.pem&apos;)) </font>],
+--------------------------------------------------------------------------------
+<font color="#26A269">481</font>:    key: <font color="#5E5C64">fs.readFileSync(path.resolve(&apos;./../../../test/fixtures/keys/agent1-key.pem&apos;)),</font>
+--------------------------------------------------------------------------------
+<font color="#26A269">482</font>:    cert: <font color="#5E5C64">fs.readFileSync(path.resolve(&apos;./../../../test/fixtures/keys/agent1-cert.pem&apos;)),</font>
+--------------------------------------------------------------------------------
+<font color="#26A269">485</font>:    ca: [ <font color="#5E5C64">fs.readFileSync(path.resolve(&apos;./../../../test/fixtures/keys/ca1-cert.pem&apos;)) </font>],
+--------------------------------------------------------------------------------
+<font color="#C01C28">severity:error </font><font color="#A2734C">rule:javascript.lang.security.detect-insecure-websocket.detect-insecure-websocket: Insecure WebSocket Detected. WebSocket Secure (wss) should be used for all WebSocket connections.</font>
+<font color="#26A269">814</font>:  const ws = new WebSocket(&apos;<font color="#5E5C64">ws://l</font>ocalhost:12345&apos;);
+--------------------------------------------------------------------------------
+<font color="#26A269">816</font>:    url: &apos;<font color="#5E5C64">ws://l</font>ocalhost:12345&apos;,
+--------------------------------------------------------------------------------
+<font color="#26A269">827</font>:  const ws = new WebSocket(&apos;<font color="#5E5C64">ws://l</font>ocalhost:12345&apos;);
+--------------------------------------------------------------------------------
+<font color="#26A269">829</font>:    url: &apos;<font color="#5E5C64">ws://l</font>ocalhost:12345&apos;,
+ran 162 rules on 119 files: 48 findings
+</pre>
